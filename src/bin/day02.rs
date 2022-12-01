@@ -1,5 +1,8 @@
-use advent_of_code_2022::*;
+
+
+const INPUT: &'static str = include_str!("../../inputs/day02.txt");
 
 fn main() {
-    println!("Day 1: {}", add(1, 3));
+    println!("Part 1: {}", "done");
+    println!("Part 2: {}", "done");
 }
