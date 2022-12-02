@@ -5,9 +5,9 @@ use anyhow::Result;
 
 #[derive(Debug, PartialEq, Copy, Clone)]
 enum Game {
-    Rock,
-    Paper,
-    Scissors,
+    Rock = 1,
+    Paper = 2,
+    Scissors = 3,
 }
 
 impl FromStr for Game {
@@ -36,14 +36,6 @@ impl Game {
         }
     }
 
-    fn score(&self) -> usize {
-        match self {
-            Game::Rock => 1,
-            Game::Paper => 2,
-            Game::Scissors => 3,
-        }
-    }
-
     fn winning_move(&self) -> Game {
         match self {
             Game::Rock => Game::Paper,
@@ -61,35 +53,25 @@ impl Game {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum Outcome {
-    Lose,
-    Draw,
-    Win,
-}
-
-impl Outcome {
-    fn score(&self) -> usize {
-        match self {
-            Outcome::Lose => 0,
-            Outcome::Draw => 3,
-            Outcome::Win => 6,
-        }
-    }
+    Lose = 0,
+    Draw = 3,
+    Win = 6,
 }
 
 const INPUT: &'static str = include_str!("../../inputs/day02.txt");
 
-fn run<F>(input: &str, strategy: F) -> Result<usize>
+fn run<F>(input: &str, strategy: F) -> Result<u64>
 where F: Fn(&str, &Game) -> Result<Game> {
     let games = split_input(input.trim(), "\n", |s| {
         let oppenent = s[0..1].parse::<Game>()?;
         Ok((oppenent, strategy(&s[2..3], &oppenent)?))
     })?;
 
-    let score: usize = games
+    let score: u64 = games
         .iter()
-        .map(|(a, b)| b.play(a).score() + b.score())
+        .map(|(a, b)| b.play(a) as u64 + *b as u64)
         .sum();
     Ok(score)
 }
