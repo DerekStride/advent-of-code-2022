@@ -8,19 +8,20 @@ pub fn split_input<F, T>(input: &str, delim: &str, func: F) -> Result<Vec<T>>
             .collect::<Result<Vec<T>>>()
 }
 
+pub fn make_input(input: &str) -> String {
+    input
+        .lines()
+        .skip(1)
+        .map(|s| s.trim())
+        .collect::<Vec<&str>>()
+        .join("\n")
+        .to_string()
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    fn make_input(input: &str) -> String {
-        input
-            .lines()
-            .skip(1)
-            .map(|s| s.trim())
-            .collect::<Vec<&str>>()
-            .join("\n")
-            .to_string()
-    }
 
     #[test]
     fn split_input_chunks_on_delimiter() -> Result<()> {
