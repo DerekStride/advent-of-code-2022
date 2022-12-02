@@ -1,4 +1,0 @@
-Point (1, 2)
-Direction Up
-Point (1, 3)
-Direction Right
