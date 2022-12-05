@@ -12,7 +12,7 @@ pub fn make_input(input: &str) -> String {
     input
         .lines()
         .skip(1)
-        .map(|s| s.trim())
+        // .map(|s| s.trim())
         .collect::<Vec<&str>>()
         .join("\n")
         .to_string()
