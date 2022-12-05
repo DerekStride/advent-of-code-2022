@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 const INPUT: &'static str = include_str!("../../inputs/day05.txt");
 
 type Stack = Vec<char>;
@@ -38,20 +40,28 @@ struct Instruction {
     dst: usize,
 }
 
+impl FromStr for Instruction {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let tokens = s.split_whitespace().collect::<Vec<&str>>();
+
+        let ins = Instruction {
+            quantity: tokens[1].parse::<usize>()?,
+            src: tokens[3].parse::<usize>().unwrap(),
+            dst: tokens[5].parse::<usize>().unwrap(),
+        };
+
+        Ok(ins)
+    }
+}
+
 fn parse_instructions(input: &str) -> Vec<Instruction> {
     input
         .trim()
         .lines()
-        .map(|line| {
-            let tokens = line.split_whitespace().collect::<Vec<&str>>();
-
-            Instruction {
-                quantity: tokens[1].parse::<usize>().unwrap(),
-                src: tokens[3].parse::<usize>().unwrap(),
-                dst: tokens[5].parse::<usize>().unwrap(),
-            }
-        })
-    .collect()
+        .map(|line| line.parse::<Instruction>().unwrap())
+        .collect()
 }
 
 fn part1(input: &str) -> String {
